@@ -1,3 +1,4 @@
 opencv-python
 torch
 torchvision
+open3d
