@@ -43,12 +43,12 @@ class MonocularMapper(object):
             prediction = self.model(self.input_batch)
             prediction = torch.nn.functional.interpolate(
                 prediction.unsqueeze(1),
-                size=self._image.shape[:2],
+                size=image.shape[:2],
                 mode="bicubic",
                 align_corners=False,
             ).squeeze()
         end_time = perf_counter()
-        print(f'Elapsed time: {end_time-start_time}s')
+        print(f'Elapsed time: {end_time-start_time:.3f}s')
 
         # Return in array format
         return prediction.cpu().numpy()
