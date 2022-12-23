@@ -1,44 +1,48 @@
-import open3d as o3d
-
 import numpy as np
 import open3d as o3d
+from tqdm import tqdm
 
 
 class PointCloud(object):
     def __init__(self, array):
-        self.cloud = self.__create_pcd(array)
-        
+        self.array = self.__preprocess(array)
+        self.cloud = self.__create_pcd(self.array)
+    
+    @staticmethod
+    def __preprocess(array) -> dict:
+        rgb = []
+        x, y = array.shape
+        avg = lambda d: sum(d) / len(d)
+        scale_factor = avg(array.shape)/array.max()
+        for row in tqdm(range(y)):
+            for col in range(x):
+                mod_depth = array[row][col]*scale_factor
+                xyz = np.array([y-(row+1), col, mod_depth])
+                rgb.append(xyz)
+
+        rgb = np.array(rgb)
+        print(f'Converted raw array of shape {array.shape} to RGB array of shape {rgb.shape}')
+        return rgb 
+    
     @staticmethod
     def __create_pcd(array):
         pcd = o3d.geometry.PointCloud()
         pcd.points = o3d.utility.Vector3dVector(array)
         return pcd
         
-    def draw_cloud(self, array:np.ndarray, colors:np.ndarray=None):
-        count, dim = array.shape
+    def draw_cloud(self):
+        count, dim = self.array.shape
         try: 
             if dim != 3:
                 raise ValueError(f'Expected 3 dimensions but got {dim}')
             
             # Visualize point cloud from array
-            print(f'Displaying 3D data for {count:,} data points')
-            pcd = self.create_pcd(array)
-            if colors is not None:
-                pcd.colors = o3d.utility.Vector3dVector(colors)
-                
-            o3d.visualization.draw_geometries([pcd])
+            print(f'Displaying 3D data for {count:,} data points')                
+            o3d.visualization.draw_geometries([self.cloud])
             
         except Exception as e:
             print(f'Failed to draw point cloud: {e}')
         
-    def export_cloud(self, cloud, out:str):
-        try: 
-            o3d.io.write_point_cloud(f'./{out}', cloud)
-            print("Saved PLY file.")
-            
-        except Exception as e:
-            print(f'Failed to export point cloud: {e}')
-
     def draw_voxels(self, array):
         try: 
             N = 1000

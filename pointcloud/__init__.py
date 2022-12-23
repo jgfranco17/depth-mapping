@@ -1,1 +1,1 @@
-from cloud import PointCloud
+from .cloud import PointCloud
