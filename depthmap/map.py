@@ -48,7 +48,7 @@ class MonocularMapper(object):
                 align_corners=False,
             ).squeeze()
         end_time = perf_counter()
-        print(f'Elapsed time: {end_time-start_time:.3f}s')
+        print(f'Elapsed modeling time: {end_time-start_time:.3f}s')
 
         # Return in array format
         return prediction.cpu().numpy()
