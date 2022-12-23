@@ -2,16 +2,14 @@
 
 <div align="center">
 
-[![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
+[![Status](https://img.shields.io/badge/status-active-success.svg)]() [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
 </div>
 
 ---
 
-<p align="center"> Few lines describing your project.
+<p align="center"> 
+    Few lines describing your project.
     <br> 
 </p>
 
@@ -22,14 +20,12 @@
 - [Deployment](#deployment)
 - [Usage](#usage)
 - [Built Using](#built_using)
-- [TODO](../TODO.md)
-- [Contributing](../CONTRIBUTING.md)
 - [Authors](#authors)
 - [Acknowledgments](#acknowledgement)
 
 ## 🧐 About <a name = "about"></a>
 
-Write about 1-2 paragraphs describing the purpose of your project.
+This project leverages PyTorch's MiDaS model and Open3D's point cloud implementation to attempt an orthogonal 3D mapping of a scene.
 
 ## 🏁 Getting Started <a name = "getting_started"></a>
 
@@ -37,70 +33,34 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them.
-
-```
-Give examples
-```
+The project build is tested on Python 3.9 and 3.10. For Mac and Linux environments, it is recommended that you manage your versions with [pyenv](https://github.com/pyenv/pyenv), or (for the general case) use a [virtual env](https://docs.python.org/3/library/venv.html) to avoid clashing dependencies with Torch packages.
 
 ### Installing
 
 A step by step series of examples that tell you how to get a development env running.
 
-Say what the step will be
+First, you need to install the Python requirements.
 
+```bash
+pip install -r requirements.txt
 ```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo.
-
-## 🔧 Running the tests <a name = "tests"></a>
-
-Explain how to run the automated tests for this system.
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## 🎈 Usage <a name="usage"></a>
-
-Add notes about how to use the system.
 
 ## 🚀 Deployment <a name = "deployment"></a>
 
-Add additional notes about how to deploy this on a live system.
+To run the model on an image, replace `FILENAME` with the file name (with path and extension) of the image to be used as input. For the `--level` configuration option, input an integer 1-3, 1 being the lowest accuracy with highest inference speed and 3 being highest accuracy with slowest inference speed.
+
+```bash
+python3 main.py --level [1|2|3] --image FILENAME
+```
 
 ## ⛏️ Built Using <a name = "built_using"></a>
 
-- [MongoDB](https://www.mongodb.com/) - Database
-- [Express](https://expressjs.com/) - Server Framework
-- [VueJs](https://vuejs.org/) - Web Framework
-- [NodeJs](https://nodejs.org/en/) - Server Environment
+- [PyTorch](https://pytorch.org/)
+- [Open3D](https://open3d.org/)
 
 ## ✍️ Authors <a name = "authors"></a>
 
-- [@kylelobo](https://github.com/kylelobo) - Idea & Initial work
-
-See also the list of [contributors](https://github.com/kylelobo/The-Documentation-Compendium/contributors) who participated in this project.
+- [@jgfranco17](https://github.com/jgfranco17)
 
 ## 🎉 Acknowledgements <a name = "acknowledgement"></a>
 
