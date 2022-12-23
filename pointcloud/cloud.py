@@ -17,7 +17,7 @@ class PointCloud(object):
         for row in tqdm(range(y)):
             for col in range(x):
                 mod_depth = array[row][col]*scale_factor
-                xyz = np.array([y-(row+1), col, mod_depth])
+                xyz = np.array([row, col, mod_depth])
                 rgb.append(xyz)
 
         rgb = np.array(rgb)
