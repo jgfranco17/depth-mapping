@@ -9,7 +9,7 @@
 ---
 
 <p align="center"> 
-    Few lines describing your project.
+    This project leverages PyTorch's MiDaS model and Open3D's point cloud implementation to attempt to create an orthogonal 3D mapping of a scene. The goal of this project is to provide a real-time, accurate, and intuitive representation of the spatial relationships between objects in a given scene. 
     <br> 
 </p>
 
