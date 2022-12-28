@@ -1,5 +1,6 @@
 import os
 import cv2
+import numpy as np
 import matplotlib.pyplot as plt
 
 
@@ -24,11 +25,25 @@ class Image(object):
     def shape(self) -> tuple:
         return self.image.shape
     
-    def display(self):
+    def colormap(self, image) -> np.ndarray:
+        """
+        Recolor the depth map from grayscale to colored.
+
+        Args:
+            image (np.ndarray): Grayscale image
+
+        Returns:
+            np.ndarray: Colored map image
+        """
+        normalized_image = (image/256).astype(np.uint8)
+        return cv2.applyColorMap(normalized_image, cv2.COLORMAP_HOT)
+    
+    def display(self, recolor:bool=False):
         """
         Display the loaded image.
         """
         print("Displaying rendered image...")
+        image = self.colormap(self.image) if recolor else self.image
         plt.axis("off")
-        plt.imshow(self.image)
+        plt.imshow(image)
         
