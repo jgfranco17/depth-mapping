@@ -35,7 +35,7 @@ class Image(object):
         Returns:
             np.ndarray: Colored map image
         """
-        normalized_image = (image/256).astype(np.uint8)
+        normalized_image = image.astype(np.uint8)
         return cv2.applyColorMap(normalized_image, cv2.COLORMAP_HOT)
     
     def display(self, recolor:bool=False):
@@ -43,7 +43,8 @@ class Image(object):
         Display the loaded image.
         """
         print("Displaying rendered image...")
-        image = self.colormap(self.image) if recolor else self.image
+        colored = lambda img: cv2.applyColorMap(img, cv2.COLORMAP_HOT)
+        image = colored(self.image) if recolor else self.image
         plt.axis("off")
         plt.imshow(image)
         
