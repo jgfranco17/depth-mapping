@@ -1,4 +1,5 @@
 import os
+from typing import Tuple
 
 import cv2
 import matplotlib.pyplot as plt
@@ -6,7 +7,7 @@ import numpy as np
 
 
 class Image(object):
-    def __init__(self, image):
+    def __init__(self, image: np.ndarray) -> None:
         self.image = image
 
     @classmethod
@@ -14,7 +15,7 @@ class Image(object):
         return cls(image=array)
 
     @classmethod
-    def from_file(cls, filename):
+    def from_file(cls, filename: str):
         if not os.path.exists(filename):
             raise ValueError(f'The image file "{filename}" does not exist.')
 
@@ -23,7 +24,7 @@ class Image(object):
         return cls(image=rgb)
 
     @property
-    def shape(self) -> tuple:
+    def shape(self) -> Tuple[int, ...]:
         return self.image.shape
 
     def colormap(self, image) -> np.ndarray:
@@ -39,7 +40,7 @@ class Image(object):
         normalized_image = image.astype(np.uint8)
         return cv2.applyColorMap(normalized_image, cv2.COLORMAP_HOT)
 
-    def display(self, recolor: bool = False):
+    def display(self, recolor: bool = False) -> None:
         """
         Display the loaded image.
         """

@@ -1,30 +1,44 @@
 from time import perf_counter
+from typing import Optional
 
+import numpy as np
 import torch
+
+from depth_mapping.shared.constants import MidasConstants
 
 
 class MonocularMapper(object):
-    def __init__(self, level: int = 2):
-        self.model_types = {1: "MiDaS_small", 2: "DPT_Hybrid", 3: "DPT_Large"}
+    def __init__(self, level: Optional[int] = 2) -> None:
+        self.model_types = {
+            1: MidasConstants.MODEL_SMALL,
+            2: MidasConstants.MODEL_MEDIUM,
+            3: MidasConstants.MODEL_LARGE,
+        }
 
         # Set model
-        self.model = torch.hub.load("intel-isl/MiDaS", self.model_types[level])
+        self.model = torch.hub.load(
+            MidasConstants.HUB_MODEL_REPO, self.model_types[level]
+        )
         device_type = "cuda" if torch.cuda.is_available() else "cpu"
         self.device = torch.device(device_type)
         self.model.to(self.device)
         self.model.eval()
 
         # Prepare transforms
-        midas_transforms = torch.hub.load("intel-isl/MiDaS", "transforms")
+        midas_transforms = torch.hub.load(MidasConstants.HUB_MODEL_REPO, "transforms")
         self.transform = midas_transforms.dpt_transform
-        if self.model_types[level] in ["DPT_Large", "DPT_Hybrid"]:
+        large_transform_models = [
+            MidasConstants.MODEL_MEDIUM,
+            MidasConstants.MODEL_LARGE,
+        ]
+        if self.model_types[level] in large_transform_models:
             self.transform = midas_transforms.dpt_transform
         else:
             self.transform = midas_transforms.small_transform
 
         print(f"Ready for monocular depth estimation, running on {device_type.upper()}")
 
-    def map(self, image):
+    def map(self, image: np.ndarray) -> np.ndarray:
         """
         Generate map of estimated relative depth.
 

@@ -1,12 +1,16 @@
 import argparse
 import os
 
-from depth_mapping.imaging import Image
-from depth_mapping.map import MonocularMapper
+from depth_mapping.imaging import Image, MonocularMapper
 from depth_mapping.pointcloud import PointCloud
 
 
 def get_parser() -> argparse.ArgumentParser:
+    """Set up command line arguments parser.
+
+    Returns:
+        argparse.ArgumentParser: Parsed command line objects
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--image", "-i", type=str, required=True, help="The image file to get data from"
@@ -19,7 +23,7 @@ def get_parser() -> argparse.ArgumentParser:
 
 def main():
     args = get_parser().parse_args()
-    image_path = os.path.join(os.getcwd(), "images", args.image)
+    image_path = os.path.join(os.getcwd(), args.image)
     mapper = MonocularMapper(args.level)
     image_sample = Image.from_file(image_path)
     raw_depth_map = mapper.map(image_sample.image)

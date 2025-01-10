@@ -2,18 +2,19 @@ import numpy as np
 import open3d as o3d
 from tqdm import tqdm
 
+from depth_mapping.shared.math_utils import average
+
 
 class PointCloud(object):
-    def __init__(self, array):
+    def __init__(self, array: np.ndarray) -> None:
         self.array = self.__preprocess(array)
         self.cloud = self.__create_pcd(self.array)
 
     @staticmethod
-    def __preprocess(array) -> dict:
+    def __preprocess(array: np.ndarray) -> np.ndarray:
         rgb = []
         x, y = array.shape
-        avg = lambda d: sum(d) / len(d)
-        scale_factor = avg(array.shape) / array.max()
+        scale_factor = average(array.shape) / array.max()
         for row in tqdm(range(y)):
             for col in range(x):
                 mod_depth = array[row][col] * scale_factor
@@ -27,12 +28,12 @@ class PointCloud(object):
         return rgb
 
     @staticmethod
-    def __create_pcd(array):
+    def __create_pcd(array: np.ndarray) -> o3d.geometry.PointCloud:
         pcd = o3d.geometry.PointCloud()
         pcd.points = o3d.utility.Vector3dVector(array)
         return pcd
 
-    def draw_cloud(self):
+    def draw_cloud(self) -> None:
         count, dim = self.array.shape
         try:
             if dim != 3:
@@ -45,12 +46,12 @@ class PointCloud(object):
         except Exception as e:
             print(f"Failed to draw point cloud: {e}")
 
-    def draw_voxels(self, array):
+    def draw_voxels(self, array: np.ndarray) -> None:
         try:
             N = 1000
             pcd = self.__create_pcd(array)
             pcd.scale(
-                1 / np.max(pcd.get_max_bound() - pcd.get_min_bound()),
+                1 / np.amax(pcd.get_max_bound() - pcd.get_min_bound()),
                 center=pcd.get_center(),
             )
             pcd.colors = o3d.utility.Vector3dVector(
