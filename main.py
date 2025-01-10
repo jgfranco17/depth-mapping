@@ -1,21 +1,18 @@
-import os
 import argparse
+import os
+
+from depthmap import MonocularMapper
 from imaging import Image
 from pointcloud import PointCloud
-from depthmap import MonocularMapper
 
 
 def get_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--image", "-i",
-        type=str, required=True,
-        help="The image file to get data from"
+        "--image", "-i", type=str, required=True, help="The image file to get data from"
     )
     parser.add_argument(
-        "--level", "-l",
-        type=int, required=False, default=2,
-        help="MiDaS model type"
+        "--level", "-l", type=int, required=False, default=2, help="MiDaS model type"
     )
     return parser
 
@@ -29,7 +26,7 @@ def main():
     depth_map = Image.from_array(raw_depth_map)
     pointcloud = PointCloud(depth_map.image)
     pointcloud.draw_cloud()
-    
-    
+
+
 if __name__ == "__main__":
     main()
