@@ -1,9 +1,9 @@
 import argparse
 import os
 
-from depthmap import MonocularMapper
-from imaging import Image
-from pointcloud import PointCloud
+from depth_mapping.imaging import Image
+from depth_mapping.map import MonocularMapper
+from depth_mapping.pointcloud import PointCloud
 
 
 def get_parser() -> argparse.ArgumentParser:
